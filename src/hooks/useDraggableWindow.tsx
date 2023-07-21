@@ -5,16 +5,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 interface draggableWindowProps {
-  createWindow: (arg: JSX.Element, name?: string) => void;
+  windows: windowIdProps[];
+  minimizedWindowsId: number[];
+  createWindow: (arg: windowProps) => void;
   focusWindow: (arg: number) => void;
   deleteWindow: (arg: number) => void;
+  handleMinimizeWindow: (arg: number) => void;
 }
 interface windowProps {
-  content: ReactNode;
+  content: JSX.Element;
   title?: string;
   favicon?: JSX.Element;
 }
-interface windowIdProps extends windowProps {
+export interface windowIdProps extends windowProps {
   id: number;
 }
 const draggableWindowContext = createContext<draggableWindowProps>(
@@ -22,14 +25,31 @@ const draggableWindowContext = createContext<draggableWindowProps>(
 );
 const DraggableWindowProvider = ({ children }: ChildrenProps) => {
   const [windows, setWindows] = useState<windowIdProps[]>([]);
+  const [minimizedWindowsId, setMinimizedWindowsId] = useState<number[]>([]);
   const [windowId, setWindowId] = useState<number>(0);
 
-  const createWindow = (window: JSX.Element, title?: string) => {
-    setWindows(prev => [
-      ...prev,
-      { id: windowId, content: window, title: title },
-    ]);
+  const createWindow = (window: windowProps) => {
+    const locatedWindow = windows.find(({ title }) => title === window.title);
+    if (locatedWindow) {
+      if (minimizedWindowsId.includes(locatedWindow.id)) {
+        setMinimizedWindowsId(prev =>
+          prev.filter(item => item !== locatedWindow.id),
+        );
+      }
+      focusWindow(locatedWindow.id);
+      return;
+    }
+    setWindows(prev => [...prev, { id: windowId, ...window }]);
     setWindowId(prev => prev + 1);
+  };
+  const handleMinimizeWindow = (id: number) => {
+    setMinimizedWindowsId(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      }
+      return [...prev, id];
+    });
+    // focusWindow(id);
   };
   const focusWindow = (index: number) => {
     const newWindows = windows.filter((_, i) => i !== index);
@@ -42,14 +62,21 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
   };
 
   const memoValue = useMemo(
-    () => ({ createWindow, deleteWindow, focusWindow }),
-    [createWindow],
+    () => ({
+      createWindow,
+      deleteWindow,
+      focusWindow,
+      handleMinimizeWindow,
+      windows: [...windows],
+      minimizedWindowsId,
+    }),
+    [createWindow, deleteWindow, focusWindow],
   );
   return (
     <draggableWindowContext.Provider value={memoValue}>
       {children}
       <AnimatePresence>
-        {windows.map(({ content, id, title }, index) => (
+        {windows.map(({ content, ...windowProps }, index) => (
           <motion.div
             initial={{
               opacity: 0,
@@ -64,11 +91,9 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
               // scale: 0.5,
             }}
             onMouseDown={() => focusWindow(index)}
-            key={id}
+            key={windowProps.id}
           >
-            <DraggableWindow id={id} title={title}>
-              {content}
-            </DraggableWindow>
+            <DraggableWindow {...windowProps}>{content}</DraggableWindow>
           </motion.div>
         ))}
       </AnimatePresence>

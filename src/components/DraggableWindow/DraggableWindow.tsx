@@ -1,14 +1,17 @@
 import { createPortal } from 'react-dom';
 import { AnimatePresence } from 'framer-motion';
+import { CgClose } from 'react-icons/cg';
+import { PiMinus } from 'react-icons/pi';
 import {
   ButtonClose,
   Content,
+  Favicon,
   WindowButtons,
   WindowHeader,
   WindowTitle,
   WindowWrapper,
 } from './_draggablewindow';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useDraggableWindow } from '`@/hooks/useDraggableWindow`';
 export interface DraggableWindowProps {
   initialPosition?: {
@@ -25,6 +28,7 @@ interface Props extends DraggableWindowProps {
   id: number;
   style?: React.CSSProperties;
   title?: string;
+  favicon?: JSX.Element;
 }
 const DraggableWindow = ({
   initialPosition,
@@ -33,9 +37,14 @@ const DraggableWindow = ({
   id,
   title,
   children,
+  favicon,
 }: Props) => {
-  const { deleteWindow } = useDraggableWindow();
-  const [size, setSize] = useState(initialSize || { width: 400, height: 400 });
+  const { deleteWindow, minimizedWindowsId, handleMinimizeWindow } =
+    useDraggableWindow();
+  const timer = useRef<NodeJS.Timeout | null>(null);
+
+  const widthPx = window.innerWidth * 0.8;
+  const heightPx = window.innerHeight * 0.8;
 
   const ref = useRef<HTMLDivElement>(null);
   const isInFullScreen = () => {
@@ -66,32 +75,52 @@ const DraggableWindow = ({
     document.onmousemove = elementDrag;
   };
 
+  const timerManager = () => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+
+    timer.current = setTimeout(() => {
+      if (ref.current) {
+        ref.current.style.transition = 'opacity ease 0.2s';
+      }
+    }, 200);
+  };
+
   const elementDrag = (e: MouseEvent) => {
     e.preventDefault();
     if (ref.current) {
       const { offsetTop, offsetLeft } = ref.current;
       const { width, height } = ref.current.style;
-      ref.current.style.transition = 'none';
+      // ref.current.style.transition = 'none';
       if (isInFullScreen()) {
-        ref.current.style.width = `${80}%`;
-        ref.current.style.height = `${80}%`;
-        // return;
-      }
-      if (offsetTop + e.movementY < 0) {
-        ref.current.style.top = '0px';
-        // handleFullScreen();
-        ref.current.blur();
+        ref.current.style.top = '0';
+        ref.current.style.left = '10%';
+
+        ref.current.style.width = `${widthPx}px`;
+        ref.current.style.height = `${heightPx}px`;
         return;
       }
-      if (offsetLeft + e.movementX < 0) {
-        ref.current.blur();
-        return;
+      let x = offsetLeft + e.movementX;
+      let y = offsetTop + e.movementY;
+      if (x < 0) {
+        x = 0;
       }
-      if (offsetTop + e.movementY + parseInt(height) > window.innerHeight) {
-        return;
+      if (y < 0) {
+        y = 0;
       }
-      ref.current.style.top = `${offsetTop + e.movementY}px`;
-      ref.current.style.left = `${offsetLeft + e.movementX}px`;
+
+      let currentWidth = parseInt(width) || 400;
+
+      if (x > window.innerWidth - (parseInt(width) || 400)) {
+        x = window.innerWidth - (parseInt(width) || 400);
+      }
+      if (y > window.innerHeight - (parseInt(height) || 400) - 48) {
+        y = window.innerHeight - (parseInt(height) || 400) - 48;
+      }
+
+      ref.current.style.top = `${y}px`;
+      ref.current.style.left = `${x}px`;
     }
   };
   const onDragEnd = () => {
@@ -102,6 +131,7 @@ const DraggableWindow = ({
     }
   };
   const handleFullScreen = () => {
+    timerManager();
     if (ref.current) {
       const { innerHeight, innerWidth } = window;
       ref.current.style.top = '0px';
@@ -111,24 +141,27 @@ const DraggableWindow = ({
     }
   };
   const handleMinimize = () => {
+    timerManager();
     if (ref.current) {
-      ref.current.style.width = `80%`;
-      ref.current.style.height = `80%`;
+      ref.current.style.width = `${window.innerWidth * 0.8}px`;
+      ref.current.style.height = `${window.innerHeight * 0.8}px`;
       ref.current.style.top = `10%`;
       ref.current.style.left = `10%`;
     }
   };
   const onHeaderDoubleClick = () => {
-    if (isInFullScreen()) {
-      handleMinimize();
-    } else {
-      handleFullScreen();
+    if (ref.current) {
+      if (isInFullScreen()) {
+        handleMinimize();
+      } else {
+        handleFullScreen();
+      }
     }
   };
 
   const closeDragElement = () => {
     if (ref.current) {
-      ref.current.style.transition = 'all 0.3s ease-in-out';
+      // ref.current.style.transition = 'all 0.3s ease-in-out';
       if (ref.current.style.top === '0px') {
         handleFullScreen();
       }
@@ -147,26 +180,22 @@ const DraggableWindow = ({
 
   return (
     <AnimatePresence>
-      <WindowWrapper style={style} ref={ref}>
+      <WindowWrapper
+        style={style}
+        ref={ref}
+        minimized={minimizedWindowsId.includes(id)}
+      >
         <WindowHeader onDoubleClick={onHeaderDoubleClick}>
           <WindowTitle onMouseDown={dragMouseDown} onMouseUp={onDragEnd}>
+            {!!favicon && <Favicon>{favicon}</Favicon>}
             {title ?? 'Window'}
           </WindowTitle>
           <WindowButtons>
+            <ButtonClose type="button" onClick={() => handleMinimizeWindow(id)}>
+              <PiMinus />
+            </ButtonClose>
             <ButtonClose type="button" onClick={() => deleteWindow(id)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="17.402"
-                height="17.398"
-                viewBox="2.885 3.301 17.402 17.398"
-              >
-                <path
-                  d="m13.648 12 6.215-6.215a1.463 1.463 0 0 0 0-2.06 1.463 1.463 0 0 0-2.06 0l-6.215 6.216-6.215-6.216a1.457 1.457 0 0 0-2.488 1.03c0 .374.146.747.428 1.03L9.53 12l-6.216 6.216a1.457 1.457 0 0 0-.428 1.03 1.457 1.457 0 0 0 2.488 1.03l6.215-6.216 6.216 6.215a1.463 1.463 0 0 0 2.06 0 1.463 1.463 0 0 0 0-2.06L13.647 12Z"
-                  fill="#d6d6d6"
-                  fill-rule="evenodd"
-                  data-name="Icon ionic-ios-close"
-                />
-              </svg>
+              <CgClose />
             </ButtonClose>
           </WindowButtons>
         </WindowHeader>

@@ -41,8 +41,10 @@ export default function Document() {
           name="p:domain_verify"
           content="2ed4fbf3c9a4c482925f4624cefc7b1f"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Noto+Sans:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300;400;600;700&display=swap"
           rel="stylesheet"
         />
 
@@ -52,8 +54,8 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <div id='modal-root'></div>
-        <div id='window-root'></div>
+        <div id="modal-root"></div>
+        <div id="window-root"></div>
       </body>
     </Html>
   );

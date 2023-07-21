@@ -1,5 +1,5 @@
 import { useDraggableWindow } from '`@/hooks/useDraggableWindow`';
-import { Button, IconName } from './_iconbutton';
+import { Button, IconContainer, IconName } from './_iconbutton';
 import { useRef } from 'react';
 
 interface IconButtonProps {
@@ -12,14 +12,14 @@ const IconButton = ({ icon, name, window }: IconButtonProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const handleDoubleClick = () => {
     if (window) {
-      createWindow(window, name);
+      createWindow({ content: window, title: name, favicon: icon });
       if (buttonRef.current) buttonRef.current.blur();
     }
   };
 
   return (
     <Button draggable onDoubleClick={handleDoubleClick} ref={buttonRef}>
-      {icon}
+      <IconContainer>{icon}</IconContainer>
       <IconName>{name}</IconName>
     </Button>
   );

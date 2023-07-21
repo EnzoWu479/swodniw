@@ -25,7 +25,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
   html{
     font-size: 16px;
-    
+    font-family: "Noto Sans", sans-serif; 
        @media (max-width: 1080px) {
       font-size: 93.75%;
     }
@@ -38,6 +38,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   body{
     background-color: var(--bg);
     color: var(--textD6);
+    overflow: hidden; 
   }
 
   a{

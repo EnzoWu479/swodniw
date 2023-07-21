@@ -9,8 +9,10 @@ export const Container = styled.main.attrs({ 'data-com': 'Container' })`
   padding: 2rem;
   padding-bottom: 3rem;
 
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 4rem);
+  grid-template-rows: repeat(auto-fit, 6rem);
+  gap: 1rem;
 
   #wallpaper {
     pointer-events: none;
