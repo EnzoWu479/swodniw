@@ -6,11 +6,13 @@ interface IconButtonProps {
   icon: JSX.Element;
   name: string;
   window?: JSX.Element;
+  onDoubleClick?: () => void;
 }
-const IconButton = ({ icon, name, window }: IconButtonProps) => {
+const IconButton = ({ icon, name, onDoubleClick, window }: IconButtonProps) => {
   const { createWindow } = useDraggableWindow();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const handleDoubleClick = () => {
+    if (onDoubleClick) onDoubleClick();
     if (window) {
       createWindow({ content: window, title: name, favicon: icon });
       if (buttonRef.current) buttonRef.current.blur();

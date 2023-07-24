@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 export const Button = styled.button.attrs({ 'data-com': 'Button' })`
   height: 6rem;
   width: fit-content;
-  width: 4rem;
+  width: 4.5rem;
   background-color: transparent;
   border: 2px solid transparent;
 
@@ -26,7 +26,7 @@ export const Button = styled.button.attrs({ 'data-com': 'Button' })`
   }
 `;
 export const IconName = styled.span.attrs({ 'data-com': 'IconName' })`
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #fff;
 
   max-width: 100%;
@@ -34,6 +34,8 @@ export const IconName = styled.span.attrs({ 'data-com': 'IconName' })`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  filter: drop-shadow(1px 2px #000a);
 
   ${Button}:focus & {
     white-space: normal;
@@ -47,7 +49,9 @@ export const IconContainer = styled.div.attrs({ 'data-com': 'IconContainer' })`
   aspect-ratio: 1;
   pointer-events: none;
 
-  img {
+  img,
+  svg {
+    color: #fff;
     width: 100%;
     height: 100%;
   }

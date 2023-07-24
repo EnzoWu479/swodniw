@@ -15,7 +15,8 @@
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "axios": "^1.4.0",
-    "eslint": "8.40.0",
+    "date-fns": "^2.30.0",
+    "eslint": "8.2.0",
     "eslint-config-next": "13.4.2",
     "framer-motion": "^10.12.16",
     "next": "13.4.2",
@@ -27,5 +28,13 @@
     "styled-components": "^6.0.0-rc.1",
     "typescript": "5.0.4",
     "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-react-hooks": "4.3.0"
   }
 }

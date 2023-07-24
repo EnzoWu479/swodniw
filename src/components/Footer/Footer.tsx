@@ -1,14 +1,28 @@
 import { useDraggableWindow } from '`@/hooks/useDraggableWindow`';
-import { FooterContainer, HomeButton, WindowButton } from './_footer';
+import {
+  DateField,
+  FooterContainer,
+  HomeButton,
+  Time,
+  TimeContainer,
+  WindowButton,
+} from './_footer';
+import { useEffect, useState } from 'react';
+import dateFormat from '`@/utils/formaters/dateFormat`';
+import Menu from '../Menu/Menu';
 
 const Footer = () => {
+  const [time, setTime] = useState(new Date().toISOString());
   const { windows, minimizedWindowsId, handleMinimizeWindow } =
     useDraggableWindow();
+  useEffect(() => {
+    setInterval(() => {
+      setTime(new Date().toISOString());
+    }, 60000);
+  }, []);
   return (
     <FooterContainer>
-      <HomeButton type="button">
-        <img src="/assets/imgs/logo.png" alt="" />
-      </HomeButton>
+      <Menu />
       {windows
         .sort((a, b) => {
           if (a.id > b.id) return 1;
@@ -26,6 +40,10 @@ const Footer = () => {
             {favicon}
           </WindowButton>
         ))}
+      <TimeContainer>
+        <Time>{dateFormat(time, 'HH:mm')}</Time>
+        <DateField>{dateFormat(time)}</DateField>
+      </TimeContainer>
     </FooterContainer>
   );
 };

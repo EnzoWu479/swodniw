@@ -1,23 +1,20 @@
 import DraggableWindow, {
   DraggableWindowProps,
 } from '`@/components/DraggableWindow/DraggableWindow`';
+import { IWindow } from '`@/types/interfaces`';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 interface draggableWindowProps {
   windows: windowIdProps[];
   minimizedWindowsId: number[];
-  createWindow: (arg: windowProps) => void;
+  createWindow: (arg: IWindow) => void;
   focusWindow: (arg: number) => void;
   deleteWindow: (arg: number) => void;
   handleMinimizeWindow: (arg: number) => void;
 }
-interface windowProps {
-  content: JSX.Element;
-  title?: string;
-  favicon?: JSX.Element;
-}
-export interface windowIdProps extends windowProps {
+
+export interface windowIdProps extends IWindow {
   id: number;
 }
 const draggableWindowContext = createContext<draggableWindowProps>(
@@ -28,7 +25,7 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
   const [minimizedWindowsId, setMinimizedWindowsId] = useState<number[]>([]);
   const [windowId, setWindowId] = useState<number>(0);
 
-  const createWindow = (window: windowProps) => {
+  const createWindow = (window: IWindow) => {
     const locatedWindow = windows.find(({ title }) => title === window.title);
     if (locatedWindow) {
       if (minimizedWindowsId.includes(locatedWindow.id)) {

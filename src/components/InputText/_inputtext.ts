@@ -4,7 +4,7 @@ export const LabelText = styled.span`
   position: absolute;
   font-size: 0.85rem;
 
-  color: #4e4e4e;
+  /* color: #4e4e4e; */
   background-color: #131212;
 
   padding: 0 5px;
@@ -33,7 +33,7 @@ export const Input = styled.input<InputProps>`
   padding: 0 10px;
 
   background-color: transparent;
-  color: #fff;
+  /* color: #fff; */
 
   box-sizing: border-box;
 
@@ -73,7 +73,7 @@ export const NormalVariantInput = styled.input<InputProps>`
   font-size: 0.75rem;
 
   background-color: transparent;
-  color: ${({ theme }) => theme.colors.text};
+  /* color: ${({ theme }) => theme.colors.text}; */
 
   border-radius: 5px;
   &:focus {

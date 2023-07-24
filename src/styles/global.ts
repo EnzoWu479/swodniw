@@ -37,7 +37,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
   body{
     background-color: var(--bg);
-    color: var(--textD6);
+    color: #121212;
     overflow: hidden; 
   }
 

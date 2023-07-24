@@ -8,11 +8,11 @@ export const FooterContainer = styled.footer.attrs({
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
 
   background-color: #1113;
   backdrop-filter: blur(0.5rem);
-  padding: 0 1rem;
+  /* padding: 0 1rem; */
+  padding-right: 1rem;
 
   display: flex;
   align-items: center;
@@ -53,8 +53,11 @@ export const WindowButton = styled.button.attrs({
   align-items: center;
   justify-content: center;
 
-  img {
+  img,
+  svg {
+    color: #fff;
     height: 60%;
+    width: 60%;
   }
 
   transition: background-color 0.2s ease-in-out;
@@ -65,3 +68,17 @@ export const WindowButton = styled.button.attrs({
       background-color: #fff3;
     `}
 `;
+export const TimeContainer = styled.div.attrs({ 'data-com': 'TimeContainer' })`
+  margin-left: auto;
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-size: 0.75rem;
+
+  gap: 0.25rem;
+`;
+export const Time = styled.span.attrs({ 'data-com': 'Time' })``;
+export const DateField = styled.span.attrs({ 'data-com': 'DateField' })``;

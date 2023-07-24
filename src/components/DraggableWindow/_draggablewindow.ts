@@ -14,6 +14,8 @@ export const WindowWrapper = styled.div.attrs({
   width: 400px;
   min-width: 200px;
   min-height: 200px;
+  max-width: 100dvw;
+  max-height: 100dvh;
 
   ${({ minimized }) =>
     minimized &&
@@ -39,6 +41,8 @@ export const WindowTitle = styled.div.attrs({ 'data-com': 'WindowTitle' })`
   display: flex;
   align-items: center;
   gap: 8px;
+  
+  color: #fff; 
 `;
 export const WindowButtons = styled.div.attrs({
   'data-com': 'WindowButtons',
@@ -69,7 +73,9 @@ export const ButtonClose = styled.button.attrs({ 'data-com': 'ButtonClose' })`
 export const Favicon = styled.div.attrs({ 'data-com': 'Favicon' })`
   height: 80%;
 
-  img {
+  img,
+  svg {
+    color: #fff;
     height: 100%;
   }
 `;
