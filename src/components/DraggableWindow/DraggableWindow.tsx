@@ -11,8 +11,9 @@ import {
   WindowTitle,
   WindowWrapper,
 } from './_draggablewindow';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDraggableWindow } from '`@/hooks/useDraggableWindow`';
+import { FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 export interface DraggableWindowProps {
   initialPosition?: {
     x: number;
@@ -43,6 +44,8 @@ const DraggableWindow = ({
     useDraggableWindow();
   const timer = useRef<NodeJS.Timeout | null>(null);
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
   const widthPx = window.innerWidth * 0.8;
   const heightPx = window.innerHeight * 0.8;
 
@@ -57,13 +60,6 @@ const DraggableWindow = ({
         width === `${innerWidth}px` &&
         height === `${innerHeight}px`
       );
-    }
-    return false;
-  };
-  const isOnTop = () => {
-    if (ref.current) {
-      const { offsetTop } = ref.current;
-      return offsetTop === 0;
     }
     return false;
   };
@@ -99,6 +95,7 @@ const DraggableWindow = ({
 
         ref.current.style.width = `${widthPx}px`;
         ref.current.style.height = `${heightPx}px`;
+        setIsFullScreen(false);
         return;
       }
       let x = offsetLeft + e.movementX;
@@ -134,20 +131,24 @@ const DraggableWindow = ({
     timerManager();
     if (ref.current) {
       const { innerHeight, innerWidth } = window;
+      ref.current.style.transition = 'all 0.2s ease-in-out';
       ref.current.style.top = '0px';
       ref.current.style.left = '0px';
       ref.current.style.width = `${innerWidth}px`;
       ref.current.style.height = `${innerHeight}px`;
     }
+    setIsFullScreen(true);
   };
   const handleMinimize = () => {
     timerManager();
     if (ref.current) {
+      ref.current.style.transition = 'all 0.2s ease-in-out';
       ref.current.style.width = `${window.innerWidth * 0.8}px`;
       ref.current.style.height = `${window.innerHeight * 0.8}px`;
       ref.current.style.top = `10%`;
       ref.current.style.left = `10%`;
     }
+    setIsFullScreen(false);
   };
   const onHeaderDoubleClick = () => {
     if (ref.current) {
@@ -193,6 +194,18 @@ const DraggableWindow = ({
           <WindowButtons>
             <ButtonClose type="button" onClick={() => handleMinimizeWindow(id)}>
               <PiMinus />
+            </ButtonClose>
+            <ButtonClose
+              type="button"
+              onClick={() => {
+                if (isFullScreen) {
+                  handleMinimize();
+                } else {
+                  handleFullScreen();
+                }
+              }}
+            >
+              {isFullScreen ? <FiMinimize2 /> : <FiMaximize2 />}
             </ButtonClose>
             <ButtonClose type="button" onClick={() => deleteWindow(id)}>
               <CgClose />
