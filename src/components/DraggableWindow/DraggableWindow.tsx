@@ -60,7 +60,7 @@ const DraggableWindow = ({
         top === '0px' &&
         left === '0px' &&
         width === `${innerWidth}px` &&
-        height === `${innerHeight}px`
+        height === `${innerHeight - 48}px`
       );
     }
     return false;
@@ -137,7 +137,7 @@ const DraggableWindow = ({
       ref.current.style.top = '0px';
       ref.current.style.left = '0px';
       ref.current.style.width = `${innerWidth}px`;
-      ref.current.style.height = `${innerHeight}px`;
+      ref.current.style.height = `${innerHeight - 48}px`;
     }
     setIsFullScreen(true);
   };
