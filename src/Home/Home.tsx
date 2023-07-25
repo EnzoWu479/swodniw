@@ -9,8 +9,10 @@ import { useEffect } from 'react';
 import { FiBox } from 'react-icons/fi';
 import CreateWindow from '`@/components/CreateWindow/CreateWindow`';
 import { FaReact } from 'react-icons/fa';
-import { BsGithub } from 'react-icons/bs';
+import { BsFolderFill, BsGithub } from 'react-icons/bs';
 import Technologies from '`@/components/Technologies/Technologies`';
+import Folders from '`@/components/Folders/Folders`';
+import homeFolder from '`@/utils/homeFolder`';
 
 const Home = () => {
   useEffect(() => {
@@ -28,9 +30,9 @@ const Home = () => {
         id="wallpaper"
       />
       <IconButton
-        icon={<img src="/assets/icons/folder.svg" alt="" />}
+        icon={<BsFolderFill />}
         name="Pastas"
-        window={<RandomContainer>olaa</RandomContainer>}
+        window={<Folders {...homeFolder} />}
       />
 
       <IconButton

@@ -41,8 +41,8 @@ export const WindowTitle = styled.div.attrs({ 'data-com': 'WindowTitle' })`
   display: flex;
   align-items: center;
   gap: 8px;
-  
-  color: #fff; 
+
+  color: #fff;
 `;
 export const WindowButtons = styled.div.attrs({
   'data-com': 'WindowButtons',
@@ -52,7 +52,9 @@ export const WindowButtons = styled.div.attrs({
   gap: 4px;
 `;
 export const Content = styled.div.attrs({ 'data-com': 'content' })`
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: #0008;
+  backdrop-filter: blur(5px);
   width: 100%;
   height: calc(100% - 2rem);
   border: 1px solid #333;

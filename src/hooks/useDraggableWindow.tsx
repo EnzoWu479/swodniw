@@ -90,13 +90,14 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
               opacity: 0,
               // scale: 0.5,
             }}
-            onMouseDown={() => focusWindow(index)}
+            onMouseDown={() => focusWindow(windowProps?.id)}
             key={windowProps?.id}
           >
             <DraggableWindow
               id={windowProps?.id}
               favicon={windowProps?.favicon}
               title={windowProps?.title}
+              windowStyle={windowProps?.windowStyle}
             >
               {windowProps?.content}
             </DraggableWindow>

@@ -7,12 +7,9 @@ export const Container = styled(WindowContainer).attrs({
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 4.5rem);
-  grid-template-rows: repeat(auto-fit, 6rem);
 `;
-export const ImageIcon = styled.img.attrs({ 'data-com': 'ImageIcon' })`
+export const Image = styled.img.attrs({ 'data-com': 'Image' })`
   object-fit: contain;
-  aspect-ratio: 1/1;
+  width: 100%;
+  height: 100%;
 `;

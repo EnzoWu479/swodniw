@@ -11,7 +11,7 @@ import {
   WindowTitle,
   WindowWrapper,
 } from './_draggablewindow';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { useDraggableWindow } from '`@/hooks/useDraggableWindow`';
 import { FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 export interface DraggableWindowProps {
@@ -27,7 +27,8 @@ export interface DraggableWindowProps {
 interface Props extends DraggableWindowProps {
   children: React.ReactNode;
   id: number;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
+  windowStyle?: CSSProperties;
   title?: string;
   favicon?: JSX.Element;
 }
@@ -39,6 +40,7 @@ const DraggableWindow = ({
   title,
   children,
   favicon,
+  windowStyle,
 }: Props) => {
   const { deleteWindow, minimizedWindowsId, handleMinimizeWindow } =
     useDraggableWindow();
@@ -212,7 +214,7 @@ const DraggableWindow = ({
             </ButtonClose>
           </WindowButtons>
         </WindowHeader>
-        <Content>{children}</Content>
+        <Content style={windowStyle}>{children}</Content>
       </WindowWrapper>
     </AnimatePresence>
   );

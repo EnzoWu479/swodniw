@@ -13,7 +13,7 @@ export const Container = styled(WindowContainer).attrs({
   justify-content: center;
 `;
 export const ProfileImg = styled.img.attrs({ 'data-com': 'ProfileImg' })`
-min-width: 150px;
+  min-width: 150px;
   width: 30%;
   max-width: 300px;
   aspect-ratio: 1/1;
@@ -28,6 +28,8 @@ export const InfosContainer = styled.div.attrs({
   flex-direction: column;
   gap: 0.5rem;
   text-align: center;
+
+  color: #fff;
 
   h1 {
     font-size: 1.5rem;

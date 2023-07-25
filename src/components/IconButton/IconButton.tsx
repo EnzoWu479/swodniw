@@ -1,14 +1,21 @@
 import { useDraggableWindow } from '`@/hooks/useDraggableWindow`';
 import { Button, IconContainer, IconName } from './_iconbutton';
-import { useRef, useState } from 'react';
+import { CSSProperties, useRef, useState } from 'react';
 
 interface IconButtonProps {
   icon: JSX.Element;
   name: string;
   window?: JSX.Element;
+  windowStyle?: CSSProperties;
   onDoubleClick?: () => void;
 }
-const IconButton = ({ icon, name, onDoubleClick, window }: IconButtonProps) => {
+const IconButton = ({
+  icon,
+  name,
+  onDoubleClick,
+  window,
+  windowStyle,
+}: IconButtonProps) => {
   const { createWindow } = useDraggableWindow();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -17,7 +24,13 @@ const IconButton = ({ icon, name, onDoubleClick, window }: IconButtonProps) => {
   const handleDoubleClick = () => {
     if (onDoubleClick) onDoubleClick();
     if (window) {
-      createWindow({ content: window, title: name, favicon: icon });
+      createWindow({
+        content: window,
+        type: 'window',
+        title: name,
+        favicon: icon,
+        windowStyle,
+      });
       onBlur();
     }
   };
