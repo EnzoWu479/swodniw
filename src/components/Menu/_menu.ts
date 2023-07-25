@@ -34,6 +34,7 @@ export const MenuContainer = styled.div.attrs({ 'data-com': 'MenuContainer' })`
   position: absolute;
   background-color: #fff;
   width: 10rem;
+  padding: 0.5rem 0;
   /* height: 10rem; */
   bottom: 100%;
   left: 0;

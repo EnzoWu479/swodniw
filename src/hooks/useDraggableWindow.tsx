@@ -27,6 +27,7 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
 
   const createWindow = (window: IWindow) => {
     const locatedWindow = windows.find(({ title }) => title === window.title);
+
     if (locatedWindow) {
       if (minimizedWindowsId.includes(locatedWindow.id)) {
         setMinimizedWindowsId(prev =>
@@ -48,9 +49,11 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
     });
     // focusWindow(id);
   };
-  const focusWindow = (index: number) => {
-    const newWindows = windows.filter((_, i) => i !== index);
-    newWindows.push(windows[index]);
+  const focusWindow = (id: number) => {
+    const newWindows = windows.filter(item => item.id !== id);
+    const window = windows.find(item => item.id === id);
+    if (!window) return;
+    newWindows.push(windows.find(item => item.id === id) as windowIdProps);
     setWindows(newWindows);
   };
   const deleteWindow = (id: number) => {
@@ -67,13 +70,13 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
       windows: [...windows],
       minimizedWindowsId,
     }),
-    [createWindow, deleteWindow, focusWindow],
+    [createWindow, deleteWindow, focusWindow, windows],
   );
   return (
     <draggableWindowContext.Provider value={memoValue}>
       {children}
       <AnimatePresence>
-        {windows.map(({ content, ...windowProps }, index) => (
+        {windows.map((windowProps, index) => (
           <motion.div
             initial={{
               opacity: 0,
@@ -88,9 +91,15 @@ const DraggableWindowProvider = ({ children }: ChildrenProps) => {
               // scale: 0.5,
             }}
             onMouseDown={() => focusWindow(index)}
-            key={windowProps.id}
+            key={windowProps?.id}
           >
-            <DraggableWindow {...windowProps}>{content}</DraggableWindow>
+            <DraggableWindow
+              id={windowProps?.id}
+              favicon={windowProps?.favicon}
+              title={windowProps?.title}
+            >
+              {windowProps?.content}
+            </DraggableWindow>
           </motion.div>
         ))}
       </AnimatePresence>

@@ -30,14 +30,14 @@ const Footer = () => {
           return 0;
         })
         .reverse()
-        .map(({ id, title, favicon }, index) => (
+        .map((windowProps, index) => (
           <WindowButton
-            title={title}
-            key={id}
-            onClick={() => handleMinimizeWindow(id)}
-            inShow={!minimizedWindowsId.includes(id)}
+            title={windowProps?.title}
+            key={windowProps?.id}
+            onClick={() => handleMinimizeWindow(windowProps?.id)}
+            inShow={!minimizedWindowsId.includes(windowProps?.id)}
           >
-            {favicon}
+            {windowProps?.favicon}
           </WindowButton>
         ))}
       <TimeContainer>
