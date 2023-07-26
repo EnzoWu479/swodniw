@@ -23,6 +23,10 @@ export const WindowWrapper = styled.div.attrs({
       opacity: 0;
       pointer-events: none;
     `}/* transition: all 0.2s ease-in-out; */
+
+    @media (max-width: 400px) {
+    width: calc(100% - 10px);
+    }
 `;
 export const WindowHeader = styled.div.attrs({ 'data-com': 'WindowHeader' })`
   display: flex;
